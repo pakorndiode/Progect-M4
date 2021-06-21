@@ -4,28 +4,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" 
-          rel="stylesheet" i
-          ntegrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+          rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Project Anime</title>
 </head>
 
-<body>
+<body class="col-12">
     <form id="header">
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow p-2" >
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#" id="anime">Du-Anime</a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#" id="anime">アニメ猫白</a>
             <input class="form-control form-control-dark  w-100" type="text" placeholder="Search" aria-label="Search" id="search">
         <ul class="navbar-nav px-3" id="nav-mobile">
             <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">search</a>
+                <button type="button" class="btn btn-dark">List <span class="badge bg-danger" id="count">0</span></button>
             </li>
         </ul>
     </header>
     </form>
-    
-        <div id="search-results" class="print">
+
+        <div id="search-results" class="print d-flex flex-wrap justify-content-around col-12">
 
         </div>
         
