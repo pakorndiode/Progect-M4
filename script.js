@@ -6,30 +6,47 @@ function searchAnime(event){
         return response.json()
     }).then(data =>{
         console.log(data)
-        addDomList(data) 
+        data.results.map((anime) =>{
+            console.log(anime)
+            updateDom(anime)
+        })
     })
     .catch(err=>console.warn(err.message));
 }
 
-function updateDom(data){
+function updateDom(anime){
+     const searchList= document.getElementById('showAnime')
+    let card = document.createElement('div')
+    card.classList.add('card','bg-dark','text-white','my-2','mx-2')
+    let img = document.createElement('img')
+    img.setAttribute('src',anime.image_url)
+    img.addEventListener('dblclick',addToFavAnime())
+    card.appendChild(img)
+    let titleAnime = document.createElement('h5')
+    titleAnime.innerHTML = `${anime.title}`
+
+    card.appendChild(titleAnime)
+    searchList.appendChild(card)
+
+    /*console.log(data.results)
     const searchResults = document.getElementById('showAnime');
-    searchResults.innerHTML = data.results 
-    .map(anime=>{ console.log(anime.mal_id)
-        return `<div class="card bg-dark text-white my-2 mx-2" >
-                <img class="card-img" src="${anime.image_url}" alt="Card image" height="100%" id="${anime.mal_id}">
-                <div class="card-img-overlay">
-                    <h5 class="card-title" style="color:snow;">${anime.title}</h5>
-                </div>
-                </div>`})
+    searchResults.innerHTML = data.results.map(anime=>{ 
+        return DomList(anime)
+    })*/
                 
 }
 
-function addDomList(data){
-    console.log(data.results)
-    let counter = 1
-    for(anime of data){
-        updateDom(counter++,anime)
-    }
+function DomList(anime){ 
+   return `<div class="card bg-dark text-white my-2 mx-2" >
+                <img class="card-img" src="${anime.image_url}" alt="Card image" height="100%" id="${anime.mal_id}">
+                <div class="card-img-overlay">`
+                +
+                getElementById(`${anime.mal_id}`).addEventListener('click',function(){
+
+                })+`
+                    <h5 class="card-title" style="color:snow;">${anime.title}</h5>
+                </div>
+                </div>`
 }
 
 var displaySearch
@@ -40,7 +57,9 @@ function displaySearch(){
 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+function addToFavAnime(){
+    
+}
 
 //////////////////////////////////SHOW IN LIST///////////////////////////////////////////////
 
