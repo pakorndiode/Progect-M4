@@ -1,4 +1,33 @@
-.print{
-    font-size: 1em;
+.print img{
+    height: 100%;
+    max-width: 200px;
 }
+@media only screen and (max-width: 768px) {
+    .print {
+        margin-left: 5%;
+    }
+}
+@media only screen and (max-width: 320px) {
+    .print {
+        margin-left: 10%;
+    }
+}
+@media only screen and (max-width: 375px) {
+    .print {
+        margin-left: 10%;
+    }
+}
+@media only screen and (max-width: 425px) {
+    .print {
+        margin-left: 5%;
+    }
+    .print img {
+        height: 100%;
+        max-width: 100px;
+    }
+    .print h6 {
+        font-size: 2px;
+    }
+}
+
 /*<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">

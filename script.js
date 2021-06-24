@@ -1,3 +1,4 @@
+/////////////////////////////////////SHOW SEARCH///////////////////////////////////////////
 function searchAnime(event){
     event.preventDefault();
     const search = document.getElementById('search')
@@ -7,7 +8,7 @@ function searchAnime(event){
     }).then(data =>{
         console.log(data)
         data.results.map((anime) =>{
-            console.log(anime)
+            console.log(anime.mal_id)
             updateDom(anime)
         })
     })
@@ -15,38 +16,25 @@ function searchAnime(event){
 }
 
 function updateDom(anime){
-     const searchList= document.getElementById('showAnime')
+    const searchResults = document.getElementById('showAnime')
     let card = document.createElement('div')
-    card.classList.add('card','bg-dark','text-white','my-2','mx-2')
-    let img = document.createElement('img')
-    img.setAttribute('src',anime.image_url)
-    img.addEventListener('dblclick',addToFavAnime())
-    card.appendChild(img)
-    let titleAnime = document.createElement('h5')
-    titleAnime.innerHTML = `${anime.title}`
-
-    card.appendChild(titleAnime)
-    searchList.appendChild(card)
-
-    /*console.log(data.results)
-    const searchResults = document.getElementById('showAnime');
-    searchResults.innerHTML = data.results.map(anime=>{ 
-        return DomList(anime)
-    })*/
-                
-}
-
-function DomList(anime){ 
-   return `<div class="card bg-dark text-white my-2 mx-2" >
-                <img class="card-img" src="${anime.image_url}" alt="Card image" height="100%" id="${anime.mal_id}">
-                <div class="card-img-overlay">`
-                +
-                getElementById(`${anime.mal_id}`).addEventListener('click',function(){
-
-                })+`
-                    <h5 class="card-title" style="color:snow;">${anime.title}</h5>
-                </div>
-                </div>`
+    card.classList.add('card','bg-dark','text-white','my-2','mx-3')
+    let image = document.createElement('img')
+    image.classList.add('card-img')
+    image.setAttribute('src',anime.image_url)
+    card.addEventListener('click',function(){
+        console.log(anime.title)
+        let confirms = confirm(`ท่านต้องการเพิ่ม ${anime.title} เข้าไปในListหรือไม่`)
+        if (confirms){
+        addToList(anime)
+        }
+    })
+    card.appendChild(image)
+    let title = document.createElement('h6')
+    title.classList.add('card-img-overlay')
+    title.innerHTML = `${anime.title}`
+    card.appendChild(title)
+    searchResults.appendChild(card)     
 }
 
 var displaySearch
@@ -55,13 +43,55 @@ function displaySearch(){
     form.addEventListener("submit",searchAnime);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////ADD TO LIST///////////////////////////////////////////////
 
-function addToFavAnime(){
-    
+function addToList(anime){
+    console.log(anime.mal_id)
+        fetch('https://se104-project-backend.du.r.appspot.com/movies/',{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+            body:JSON.stringify({
+            "id":632110345,
+            "movie": {
+                    "url": anime.url,
+                    "image_url": anime.image_url,
+                    "title": anime.title,
+                    "synopsis": anime.synopsis,
+                    "type": anime.type,
+                    "episodes": anime.episodes,
+                    "score": anime.score,
+                    "rated": anime.rated
+                    }
+            })
+        }).then((response)=>{
+                return response.json()
+            }).catch(err=>console.warn(err.message));
+        
+}
+///////////////////////////////////DELETE IN LIST///////////////////////////////////////////////
+
+function deleteList(id){
+    fetch( `https://se104-project-backend.du.r.appspot.com/movie?id=632110345&&movieId=${id}`,{
+         method: 'DELETE' 
+    }).then(response => { 
+        if (response.status === 200)
+        { 
+            return response.json() 
+        }else{
+             throw Error(response.text) }
+    }).then(data =>
+            { alert(`Anime name ${data.title} is now deleted 
+ID = ${data.id}`) 
+    }).catch( error => 
+            { alert('your input Anime id is not in the database') 
+    })
 }
 
-//////////////////////////////////SHOW IN LIST///////////////////////////////////////////////
+
+
+///////////////////////////////////SHOW IN LIST////////////////////////////////////////////////
 
 
 function onload(){
@@ -74,16 +104,16 @@ function onload(){
     })
 }
 
-function addStudentList(studentList){
-    console.log(studentList)
+function addStudentList(data){
+    console.log(data)
     let counter = 1
-    for(student of studentList){
-        addStudentTotable(counter++,student)
+    for(anime of data){
+        addStudentTotable(counter++,anime)
     }
 }
 
-function addStudentTotable(index,student){
-    console.log(student)
+function addStudentTotable(index,anime){
+    console.log(anime)
     const tableBody = document.getElementById('tableBody')
     let row = document.createElement('tr')
     let cell = document.createElement('th')
@@ -91,12 +121,12 @@ function addStudentTotable(index,student){
     cell.innerHTML = index
     row.appendChild(cell)
     cell = document.createElement('td')
-    cell.innerHTML = `${student.title} ${student.synopsis}`
+    cell.innerHTML = `${anime.title} ${anime.synopsis}`
     row.appendChild(cell)
     cell = document.createElement('td')
-    cell.innerHTML = student.id
+    cell.innerHTML = anime.id
     let img = document.createElement('img')
-    img.setAttribute('src',student.image_url)
+    img.setAttribute('src',anime.image_url)
     img.height = 200
     img.classList.add('img-thumbnail')
     cell.appendChild(img)
@@ -108,9 +138,9 @@ function addStudentTotable(index,student){
     button.setAttribute('type','button')
     button.innerText = 'delete'
     button.addEventListener('click',function() {
-        let confirms = confirm(`ท่านต้องการลบคุณ ${student.name} หรือไม่`)
+        let confirms = confirm(`ท่านต้องการลบคุณ ${anime.title} หรือไม่`)
         if (confirms){
-        deleteStudent(student.id)
+        deleteList(anime.id)
         }
     })
     cell.appendChild(button)
@@ -122,7 +152,7 @@ function addStudentTotable(index,student){
     button2.setAttribute('type','button2')
     button2.innerText = 'Edit'
     button2.addEventListener('click',function() {
-        let confirms2 = confirm(`ท่านต้องการแก้ไขคุณ ${student.name} หรือไม่`)
+        let confirms2 = confirm(`ท่านต้องการแก้ไขคุณ ${anime.name} หรือไม่`)
         if (confirms2){
         singleStudentResult.style.display='none'
         listStudentResult.style.display='none'
