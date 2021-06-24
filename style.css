@@ -1,6 +1,19 @@
+.print{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:start;
+}
 .print img{
     height: 100%;
     max-width: 200px;
+    
+}
+.print .card:hover img{
+    height: 100%;
+    max-width: 200px;
+    filter: blur(2px);
+    color: #000;
+    
 }
 @media only screen and (max-width: 768px) {
     .print {
@@ -30,4 +43,15 @@
     }
 }
 
+.print2 img{
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.print2{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
 /*<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">

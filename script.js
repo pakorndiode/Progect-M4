@@ -1,5 +1,7 @@
 /////////////////////////////////////SHOW SEARCH///////////////////////////////////////////
 function searchAnime(event){
+    const searchResults = document.getElementById('showAnime')
+    searchResults.innerHTML = ''
     event.preventDefault();
     const search = document.getElementById('search')
     fetch(`https://api.jikan.moe/v3/search/anime?q=${search.value}&page=1`)
@@ -22,11 +24,16 @@ function updateDom(anime){
     let image = document.createElement('img')
     image.classList.add('card-img')
     image.setAttribute('src',anime.image_url)
-    card.addEventListener('click',function(){
+    card.addEventListener('dblclick',function(){
         console.log(anime.title)
-        let confirms = confirm(`ท่านต้องการเพิ่ม ${anime.title} เข้าไปในListหรือไม่`)
+        let confirms = confirm(`ท่านต้องการเพิ่ม ${anime.title} เข้าไปใน List หรือไม่`)
         if (confirms){
         addToList(anime)
+        //location.reload()
+        const searchResults = document.getElementById('showList')
+        searchResults.innerHTML = ''
+        }else{
+            console.log("กดยกเลิก")
         }
     })
     card.appendChild(image)
@@ -68,6 +75,8 @@ function addToList(anime){
         }).then((response)=>{
                 return response.json()
             }).catch(err=>console.warn(err.message));
+            
+        onload()
         
 }
 ///////////////////////////////////DELETE IN LIST///////////////////////////////////////////////
@@ -83,7 +92,10 @@ function deleteList(id){
              throw Error(response.text) }
     }).then(data =>
             { alert(`Anime name ${data.title} is now deleted 
-ID = ${data.id}`) 
+ID = ${data.id}` ) //location.reload()
+                    onload()
+                    const searchResults = document.getElementById('showList')
+                    searchResults.innerHTML = ''
     }).catch( error => 
             { alert('your input Anime id is not in the database') 
     })
@@ -100,92 +112,95 @@ function onload(){
         return response.json()
     }).then(data=>{
         console.log(data)
-        addStudentList(data)
+        addAnime(data)
     })
 }
 
-function addStudentList(data){
+function addAnime(data){
     console.log(data)
-    let counter = 1
     for(anime of data){
-        addStudentTotable(counter++,anime)
+        addAnimeTotable(anime)
     }
 }
 
-function addStudentTotable(index,anime){
+function addAnimeTotable(anime){
     console.log(anime)
-    const tableBody = document.getElementById('tableBody')
-    let row = document.createElement('tr')
-    let cell = document.createElement('th')
-    cell.setAttribute('score','row')
-    cell.innerHTML = index
-    row.appendChild(cell)
-    cell = document.createElement('td')
-    cell.innerHTML = `${anime.title} ${anime.synopsis}`
-    row.appendChild(cell)
-    cell = document.createElement('td')
-    cell.innerHTML = anime.id
-    let img = document.createElement('img')
-    img.setAttribute('src',anime.image_url)
-    img.height = 200
-    img.classList.add('img-thumbnail')
-    cell.appendChild(img)
-    row.appendChild(cell)
-    cell = document.createElement('td')
-    let button = document.createElement('button')
-    button.classList.add('btn')
-    button.classList.add('btn-danger')
-    button.setAttribute('type','button')
-    button.innerText = 'delete'
-    button.addEventListener('click',function() {
-        let confirms = confirm(`ท่านต้องการลบคุณ ${anime.title} หรือไม่`)
-        if (confirms){
-        deleteList(anime.id)
-        }
-    })
-    cell.appendChild(button)
-    row.appendChild(cell)
-    cell = document.createElement('td')
-    let button2 = document.createElement('button')
-    button2.classList.add('btn')
-    button2.classList.add('btn-primary')
-    button2.setAttribute('type','button2')
-    button2.innerText = 'Edit'
-    button2.addEventListener('click',function() {
-        let confirms2 = confirm(`ท่านต้องการแก้ไขคุณ ${anime.name} หรือไม่`)
-        if (confirms2){
-        singleStudentResult.style.display='none'
-        listStudentResult.style.display='none'
-        addUserDetail.style.display='block'
-        console.log(student.id)
-        ip = student.id
-        }
-    })
-    cell.appendChild(button2)
-    row.appendChild(cell)
-    row.appendChild(cell)
-    tableBody.appendChild(row)
-    hideAll()
+
+    const searchResults = document.getElementById('showList')
+    let card = document.createElement('div')
+        card.classList.add('col-4','my-4',)
+    let card2 = document.createElement('div')
+        card2.classList.add('card','m-3','col-10')
+    let image = document.createElement('img')
+        image.classList.add('card-img-top')
+        image.setAttribute('alt','100%x180')
+        image.setAttribute('src',anime.image_url)
+    let card3 = document.createElement('div')
+        card3.classList.add('card-body')
+    let title = document.createElement('h5')
+        title.classList.add('card-title')
+        title.innerHTML = `${anime.title}`
+    let details = document.createElement('p')
+        details.classList.add('card-text')
+        details.innerHTML = `${anime.synopsis}`
+    let card4 = document.createElement('div')
+        card4.classList.add('d-flex','justify-content-end')
+    let btngroup =document.createElement('div')
+        btngroup.classList.add('btn-group')
+    let viwe = document.createElement('button')
+        viwe.classList.add('btn','btn-sm','btn-outline-primary')
+        viwe.setAttribute('type','button')
+        viwe.innerText = 'Viwe'
+        viwe.addEventListener('click',function(){
+            console.log(anime.title)
+            let confirms = confirm(`ท่านต้องการเพิ่ม ${anime.title} เข้าไปใน List หรือไม่`)
+            if (confirms){
+            console.log("กดตกลง")
+            }else{
+            console.log("กดยกเลิก")
+            }
+        })
+    let deleteBNT = document.createElement('button')
+        deleteBNT.classList.add('btn','btn-sm','btn-outline-danger')
+        deleteBNT.setAttribute('type','button')
+        deleteBNT.innerText = 'Delete'
+        deleteBNT.addEventListener('click',function() {
+            let confirms = confirm(`ท่านต้องการลบคุณ ${anime.title} หรือไม่`)
+            if (confirms){
+            deleteList(anime.id)
+            }
+        })
+
+    card.appendChild(card2)
+    card2.appendChild(image)
+    card2.appendChild(card3)
+    card3.appendChild(title)
+    card3.appendChild(details)
+    card2.appendChild(card4)
+    card4.appendChild(btngroup)
+    btngroup.appendChild(viwe)
+    btngroup.appendChild(deleteBNT)
+    searchResults.appendChild(card)    
+    showList.style.display='none'
     displaySearch()
+    
 }  
 
 //////////////////////////////HIDE ALL//////////////////////////////////////////
-var getss = document.getElementById('showList')
-var showAnime = document.getElementById('showAnime')
 
 function hideAll(){
-    showList.style.display='none'
+    showList.style.display='flex'
 }
 var countList = 0
 var list = document.getElementById('List')
 list.addEventListener('click',function(){
     if(countList==0){
-        showList.style.display='block'
+        showList.style.display='flex'
         showAnime.style.display='none'
         countList++
     }else{
         showList.style.display='none'
-        showAnime.style.display='block'
+        showAnime.style.display='flex' 
         countList=0
     }
 })
