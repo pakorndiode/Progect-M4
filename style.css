@@ -1,3 +1,7 @@
+body{
+    font-family: 'Segoe UI';
+}
+
 .print{
     display: flex;
     flex-wrap: wrap;
@@ -53,5 +57,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+}
+
+.print3 {
+    font-size: 20px;
 }
 /*<link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
