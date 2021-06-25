@@ -79,7 +79,7 @@ function addToList(anime){
                 return response.json()
             }).catch(err=>console.warn(err.message));
             
-        
+      
 }
 ///////////////////////////////////DELETE IN LIST///////////////////////////////////////////////
 
@@ -159,7 +159,7 @@ function showDetail(anime){
     let viwe = document.createElement('button')
         viwe.classList.add('btn','btn-sm','btn-outline-primary')
         viwe.setAttribute('type','button')
-        viwe.innerText = 'Viwe'
+        viwe.innerText = 'View'
         viwe.addEventListener('click',function(){
             searchResults.innerHTML=''
             const A = document.getElementById('showList')
@@ -231,7 +231,7 @@ function addAnimeTotable(anime){
     let viwe = document.createElement('button')
         viwe.classList.add('btn','btn-sm','btn-outline-primary')
         viwe.setAttribute('type','button')
-        viwe.innerText = 'Viwe'
+        viwe.innerText = 'View'
         viwe.addEventListener('click',function(){
             showList.style.display='none'
             detailsF(anime.id)
@@ -275,6 +275,9 @@ var countList = 0
 var list = document.getElementById('List')
 list.addEventListener('click',function(){
     if(countList==0){
+        const searchResults = document.getElementById('showList')
+        searchResults.innerHTML = ''
+        onload()
         showList.style.display='flex'
         showAnime.style.display='none'
         countList++
